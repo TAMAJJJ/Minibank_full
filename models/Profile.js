@@ -10,8 +10,9 @@ const ProfileSchema = new mongoose.Schema({
     required: true
   },
   Balance:{
-    type: Double
+    type: Number,
+    default: 0
   }
 });
 
-module.export = Profile = mongoose.model('profile', ProfileSchema);
+module.exports = Profile = mongoose.model('profile', ProfileSchema);

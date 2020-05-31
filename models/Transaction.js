@@ -14,9 +14,9 @@ const TransactionSchema = new mongoose.Schema({
     required: true
   },
   Amount:{
-    type: Double,
+    type: Number,
     required: true
   }
 });
 
-module.export = Transaction = mongoose.model('transaction', TransactionSchema);
+module.exports = Transaction = mongoose.model('transaction', TransactionSchema);
