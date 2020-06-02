@@ -11,6 +11,10 @@ app.use(express.json({ extended:false }));
 
 app.get('/',(req,res) => res.send(`API running...`));
 
+var cors = require('cors')
+
+app.use(cors());
+
 //define routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
