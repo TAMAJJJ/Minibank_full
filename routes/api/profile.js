@@ -108,8 +108,13 @@ router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
   let profile = await Profile.findOne({ accountNumber:req.params.accountNumber });
   let balance = profile.Balance;
 
+  let bank = await Bank.findOne({ bankName: 'salt' });
+  let totalAmount = bank.totalDeposit;
+
+
   if (creditdebit === "credit") {
     let newBalance = balance + amount;
+    let newAmount = totalAmount - amount;
 
     try {
       profile = await Profile.findOneAndUpdate(
@@ -118,9 +123,19 @@ router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
             { new: true }
           );
 
-          return res.json(profile);
+      //return res.json(profile);
 
-          await profile.save();
+      await profile.save();
+
+
+      bank = await Bank.findOneAndUpdate(
+            { bankName: 'salt' },
+            { totalDeposit: newAmount },
+            { new: true }
+          );
+      return res.json(bank);
+      await bank.save();
+
     } catch (e) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -128,6 +143,7 @@ router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
   }else{
     if (balance >= amount) {
       let newBalance = balance - amount;
+      let newAmount = totalAmount + amount;
 
       try {
         profile = await Profile.findOneAndUpdate(
@@ -136,9 +152,17 @@ router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
               { new: true }
             );
 
-            return res.json(profile);
+        return res.json(profile);
 
-            await profile.save();
+        await profile.save();
+
+        bank = await Bank.findOneAndUpdate(
+              { bankName: 'salt' },
+              { totalDeposit: newAmount },
+              { new: true }
+            );
+        await bank.save();
+
       } catch (e) {
         console.error(err.message);
         res.status(500).send('Server Error');

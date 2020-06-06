@@ -22,9 +22,27 @@ router.post('/',auth, async (req,res) => {
   try {
     //Create
     transaction = new Transaction(transactionFields);
+    let user = await Profile.findOne({ accountNumber : accountNumber });
+    let target = await Profile.findOne({ accountNumber : targetAccount });
 
-    //await transaction.save();
+    const newUserBalance = user.Balance - Amount;
+    const newTargetBalance = target.Balance + Amount;
 
+    user = await Profile.findOneAndUpdate(
+      { accountNumber : accountNumber },
+      { Balance : newUserBalance },
+      { new:true }
+    );
+
+    target = await Profile.findOneAndUpdate(
+      { accountNumber : targetAccount },
+      { Balance : newTargetBalance },
+      { new:true }
+    );
+
+    await user.save();
+    await target.save();
+    //res.json(user);
     res.json(transaction);
 
     //update profile

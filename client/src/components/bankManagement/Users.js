@@ -23,7 +23,6 @@ const Users = ({ getAllProfiles, profile : {profiles}}) => {
   }
 
 
-
   return(
       <div className="column eight wide">
         <table style = {{tableLayout: 'auto',width: '100%'  }}>
