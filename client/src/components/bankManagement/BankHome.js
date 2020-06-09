@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import Header from './Header';
 import Users from './Users';
 import CreditDebit from './CreditDebit';
-import { getCurrentBank } from '../../actions/bank';
+import Home from './Home';
 
-const BankHome = ({ getCurrentBank, bank:{ bank } }) => {
-  useEffect(() => {
-    getCurrentBank();
-  },[]);
+
+const BankHome = () => {
+
 
   return (
     <div className="ui row">
@@ -19,33 +16,14 @@ const BankHome = ({ getCurrentBank, bank:{ bank } }) => {
         <div className="column eight wide">
           <Header />
         </div>
-
+        <Route path="/BankHome" component={Home}/>
         <Route path="/Users" component={Users}/>
         <Route path="/CreditDebit" component={CreditDebit}/>
-        
-        <div className="column eight wide">
-          Total User: {bank === null ? ('no bank') : (bank.totalUser)}
-        <br/>
-          Total Deposit: {bank === null ? ('no bank') : (bank.totalDeposit)}
-
-        </div>
       </BrowserRouter>
 
     </div>
   );
 };
 
-BankHome.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  bank: PropTypes.object.isRequired
-}
 
-const mapStateToProps = state => ({
-  bank: state.bank
-});
-
-export default connect(
-  mapStateToProps,
-  { getCurrentBank }
-)(BankHome);
+export default BankHome;
