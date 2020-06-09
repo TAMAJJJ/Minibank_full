@@ -7,3 +7,5 @@
 --password(for all accounts): 123456
 
 --accountNumber: 1234123412341234,4321432143214321
+
+![login page](https://github.com/TAMAJJJ/Minibank_full/blob/master/screenshots/Screen%20Shot%202020-06-09%20at%203.29.42%20PM.png)
