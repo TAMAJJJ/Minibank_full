@@ -99,26 +99,27 @@ router.get('/user/:user_id', async (req,res) => {
   }
 });
 
-//@route PUT api/profile/creditdebit/:accountNumber
+//@route PUT api/profile/creditdebit
 //@desc PUT profile by account Number
 //@access Private
-router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
-  const { creditdebit, amount } = req.body;
+router.put('/creditdebit',auth, async (req,res) => {
+  const { accountNumber,creditdebit, amount } = req.body;
 
-  let profile = await Profile.findOne({ accountNumber:req.params.accountNumber });
-  let balance = profile.Balance;
+  let profile = await Profile.findOne({ accountNumber:accountNumber });
+  let balance = parseInt(profile.Balance);
 
   let bank = await Bank.findOne({ bankName: 'salt' });
-  let totalAmount = bank.totalDeposit;
+  let totalAmount = parseInt(bank.totalDeposit);
+
 
 
   if (creditdebit === "credit") {
-    let newBalance = balance + amount;
-    let newAmount = totalAmount - amount;
+    let newBalance = balance + parseInt(amount);
+    let newAmount = totalAmount - parseInt(amount);
 
     try {
       profile = await Profile.findOneAndUpdate(
-            { accountNumber:req.params.accountNumber },
+            { accountNumber:accountNumber },
             { Balance: newBalance},
             { new: true }
           );
@@ -141,13 +142,13 @@ router.put('/creditdebit/:accountNumber',auth, async (req,res) => {
       res.status(500).send('Server Error');
     }
   }else{
-    if (balance >= amount) {
-      let newBalance = balance - amount;
-      let newAmount = totalAmount + amount;
+    if (balance >= parseInt(amount)) {
+      let newBalance = balance - parseInt(amount);
+      let newAmount = totalAmount + parseInt(amount);
 
       try {
         profile = await Profile.findOneAndUpdate(
-              { accountNumber:req.params.accountNumber },
+              { accountNumber:accountNumber },
               { Balance: newBalance},
               { new: true }
             );

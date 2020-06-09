@@ -1,7 +1,9 @@
 import {
   GET_PROFILE,
   GET_ALL_PROFILES,
-  PROFILE_ERROR
+  PROFILE_ERROR,
+  CREDIT_DEBIT,
+  CREDIT_DEBIT_ERROR
 } from '../actions/types';
 
 const initialState = {
@@ -32,7 +34,23 @@ export default function(state = initialState, action) {
     }
     break;
 
+    case CREDIT_DEBIT:
+    return{
+      ...state,
+      profile: payload,
+      loading: false
+    }
+    break;
+
     case PROFILE_ERROR:
+    return{
+      ...state,
+      error: payload,
+      loading: false
+    }
+    break;
+
+    case CREDIT_DEBIT_ERROR:
     return{
       ...state,
       error: payload,
